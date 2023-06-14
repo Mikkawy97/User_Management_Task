@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import Select from '@mui/material/Select';
-import { DataGrid } from '@mui/x-data-grid';
+
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -20,6 +20,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DownloadIcon from '@mui/icons-material/Download';
 import ModalInput from '../ModalInput/ModalInput';
+import { DataGridPro } from '@mui/x-data-grid-pro'
 
 
 
@@ -35,7 +36,9 @@ class UserTable extends React.Component  {
             open:false,
             item:{},
             email_f:'',
-            user_f:''
+            user_f:'',
+            status_f:'any',
+            date_f:'',
           
         };
         this.handleEdit_AddUser=this.handleEdit_AddUser.bind(this);
@@ -103,7 +106,7 @@ handleEdit_AddUser(user){
     
     
    temp.push(user);
-   console.log(temp);
+   
       this.setState({users:temp});
       localStorage.setItem( 'users', JSON.stringify(temp) );
   }
@@ -139,7 +142,7 @@ handleEdit_AddUser(user){
         
           var x=params.row.UserName;
           var arr=x.split('.');
-         console.log(arr);
+     
        
        
           return (
@@ -178,7 +181,7 @@ handleEdit_AddUser(user){
         {
           field: 'created_on',
           headerName: 'Created on',
-       
+          type: 'singleSelect',
          
           width: 90,
         },
@@ -242,19 +245,49 @@ handleEdit_AddUser(user){
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={10}
+                      value={this.state.status_f}
                         label="User Status"
                         size='small'
-                        // onChange={handleChange}
+                        onChange={(e)=>{
+                            this.setState({status_f:e.target.value});
+                        }}
+                    
                     >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                       <MenuItem selected hidden disabled value={'any'} >Any</MenuItem>
+                        <MenuItem value={"Active"}>Active</MenuItem>
+                        <MenuItem value={"Inactive"}>Inactive</MenuItem>
+                        <MenuItem value={"Locked"}>Locked</MenuItem>
                     </Select>
                   </FormControl>
                   <LocalizationProvider  dateAdapter={AdapterDayjs}>
                   
-                        <DatePicker sx={{width:150,marginRight:1}}  slotProps={{ textField: { size: 'small' } }}  label="Creation Date" defaultValue={dayjs('2022-04-17')}  />
+                        <DatePicker sx={{width:150,marginRight:1}}  slotProps={{ textField: { size: 'small' } }}  label="Creation Date" defaultValue={dayjs('2023-06-14')} 
+                        
+                        onChange={(newValue) =>{ 
+                          var month=newValue.$M+1;
+                          var day=newValue.$D;
+                          var m;
+                          var d;
+                          if(month >=10){
+                            m=''+month;
+                          }
+                          else{
+                            
+                            m=''+month;
+                          }
+                          if(day >=10){
+                            d=''+day;
+                          }
+                          else{
+                            d=''+day;
+                          }
+                        var string_date=m+'/'+d+'/'+newValue.$y;
+                        console.log(string_date);
+                        this.setState({date_f:string_date});
+
+
+                        }}
+                        />
                  
                     </LocalizationProvider>
                     <div className='filter_text'>filter All</div>
@@ -286,7 +319,7 @@ handleEdit_AddUser(user){
             </div>
             <div className='col-md-12 p-0'>
             <Box sx={{ height: 300 }}>
-            <DataGrid
+            <DataGridPro
                 rows={this.state.users}
                 columns={columns}
                   autoHeight={false}
@@ -304,7 +337,9 @@ handleEdit_AddUser(user){
                   filterModel={{
                     items: [
                       { id:1,field: 'Email', operator: 'contains', value: this.state.email_f },
-                     
+                      { id:2,field: 'UserName', operator: 'contains', value: this.state.user_f },
+                      { id:3,field: 'status', operator: 'is', value: this.state.status_f==='any' ? '':this.state.status_f },
+                      { id:4,field: 'created_on', operator: 'is', value:this.state.date_f},
                    
                       
                   ]
