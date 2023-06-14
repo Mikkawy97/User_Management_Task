@@ -1,0 +1,49 @@
+.header_wrapper{
+    background-color: #ffffff;
+    padding: 5px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.header_wrapper .title{
+        color: 
+        #585e74;
+        font-weight: 500;
+        font-size: 14px;
+        margin-right: 5px;
+}
+.header_wrapper .date_styles{
+    color: 
+    #585e74;
+    font-weight: 500;
+    font-size: 13px;
+}
+.header_wrapper .user_name_styles{
+    color: darkgray;
+    font-weight: 500;
+    font-size: 13px;
+}
+.header_wrapper .user_name_ab{
+    background-color: #e6f1ff;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 5px;
+    border-radius: 50%;
+}
+.header_wrapper .notify_icon{
+    position: relative;
+}
+.header_wrapper .notify_icon .badge{
+   background-color: red;
+   padding: 2px 2px;
+  
+   position: absolute;
+   top: -2px;
+   right: 0px;
+}
+.header_wrapper .vl{
+    width: 0.5px;
+    height: 25px;
+    background-color: 
+    #ccc;
+    margin-right: 10px;
+    margin-left: 10px;
+}

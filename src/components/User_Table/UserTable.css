@@ -1,0 +1,73 @@
+.users_table_container .add_user{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #22a565;
+    padding:5px 10px;
+    color: white;
+    border-style: none;
+    border-radius: 5px;
+}
+.users_table_container .add_user:hover{
+
+    background-color: #034927 !important;
+    transition-delay: 0.3;
+
+}
+.users_table_container .table_cont {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+}
+.users_table_container .table_cont  .filter_text{
+color: #2d8dfb;
+font-size: 14px;
+cursor: pointer;
+}
+.users_table_container .vl{
+    width: 0.5px;
+    height: 25px;
+    background-color: 
+    #ccc;
+    margin-right: 10px;
+    margin-left: 10px;
+    }
+.users_table_container .icon_wrapper{
+     background-color: #e7e9ef;
+     color: #51576d;
+     padding: 0px 10px;
+     border-radius: 5px;
+    height: 35px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     margin-right: 10px;
+     cursor: pointer;
+     font-size: 16px;
+   
+        }  
+.users_table_container .icon_wrapper:hover{
+
+    background-color:#034927 !important ;
+    color: white;
+    transition-delay: 0.2ms;
+               }           
+.users_table_container .unselect{
+                
+                color: #51576d;
+           
+                text-decoration: underline;
+                cursor: pointer;
+              
+                   }  
+.users_table_container .avatar{
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: black;
+}                   
