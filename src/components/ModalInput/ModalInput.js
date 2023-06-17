@@ -7,16 +7,19 @@ import Modal from '@mui/base/Modal';
 import './ModalInput.css';
 import { IoMdClose } from "react-icons/io";
 
+import { useState } from "react";
+
+
 export default function ModalInput(props) {
  
- 
+  const [item, setItem] = useState({fullName:'',UserName:'',Email:'',status:'',group:''});
     let openprop=props.open;
  
 
    
 
 
-
+    console.log(props.item);
   return (
     <div>
 
@@ -50,6 +53,8 @@ export default function ModalInput(props) {
                             var temp={...props.item};
                             temp.fullName=e.target.value;
                             props.handleUserSelection(temp);
+                            
+                            setItem(temp);
 
                         }}
                         
@@ -65,7 +70,7 @@ export default function ModalInput(props) {
                                  var temp={...props.item};
                                  temp.UserName=e.target.value;
                                  props.handleUserSelection(temp);
-     
+                                 setItem(temp);
                              }}
                         
                         />
@@ -78,7 +83,7 @@ export default function ModalInput(props) {
                                     var temp={...props.item};
                                     temp.Email=e.target.value;
                                     props.handleUserSelection(temp);
-        
+                                    setItem(temp);
                                 }}
                         
                         />
@@ -91,7 +96,7 @@ export default function ModalInput(props) {
                              var temp={...props.item};
                              temp.group=e.target.value;
                              props.handleUserSelection(temp);
- 
+                             setItem(temp);
                          }}
                         
                         
@@ -111,6 +116,7 @@ export default function ModalInput(props) {
                         var temp={...props.item};
                         temp.status=e.target.value;
                         props.handleUserSelection(temp);
+                        setItem(temp);
 
                     }}
                    
@@ -133,10 +139,15 @@ export default function ModalInput(props) {
             <div className='col-md-6 p-0 d-flex justify-content-end'>
                 <button className='cancel_user'onClick={props.handleClose} >Cancel</button>
                 <button className='add_user ' onClick={()=>{
-                      if(props.item.UserName !=='' && props.item.Email!=='' && props.item.fullName !=='' && props.item.group!=='' && props.item.status !=='')    {
+                 
+                      if(item.UserName?.length !==0 && item.Email?.length!==0 && item.fullName?.length !==0 && item.group?.length !==0 && item.status?.length !==0)    {
                
                         props.handleEdit_AddUser(props.item);
+                        alert('User Added');
                       }  
+                      else{
+                        alert('Please Complete All Fields');
+                      }
                     
                 }}>{props.edit ?'Edit':'Add'} User</button>
             </div>

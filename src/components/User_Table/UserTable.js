@@ -20,7 +20,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DownloadIcon from '@mui/icons-material/Download';
 import ModalInput from '../ModalInput/ModalInput';
-import { DataGridPro } from '@mui/x-data-grid-pro'
+import { DataGrid } from '@mui/x-data-grid'
 
 
 
@@ -39,6 +39,7 @@ class UserTable extends React.Component  {
             user_f:'',
             status_f:'any',
             date_f:'',
+            row_selected_Items:[]
           
         };
         this.handleEdit_AddUser=this.handleEdit_AddUser.bind(this);
@@ -140,7 +141,7 @@ handleEdit_AddUser(user){
         align:'left',
         renderCell: (params) => {
         
-          var x=params.row.UserName;
+          var x=params.row.fullName;
           var arr=x.split('.');
      
        
@@ -194,6 +195,25 @@ handleEdit_AddUser(user){
            this.handleOpen();
            this.setState({edit:true})  ;
  
+       };
+       const filterdRows =() =>{
+        var temp=[...this.state.users];
+      
+         temp=  temp.filter((item)=>{
+          
+           if(item.Email?.includes(this.state.email_f) && item.UserName?.includes(this.state.user_f) && (this.state.status_f==='any'? true:item.status?.includes(this.state.status_f) ) && item.created_on?.includes(this.state.date_f) ){
+            
+            return true;
+           }
+           else{
+            return false;
+           }
+              
+          });
+      
+          return temp;
+        
+   
        };
        
       
@@ -253,7 +273,7 @@ handleEdit_AddUser(user){
                         }}
                     
                     >
-                       <MenuItem selected hidden disabled value={'any'} >Any</MenuItem>
+                       <MenuItem selected  value={'any'} >Any</MenuItem>
                         <MenuItem value={"Active"}>Active</MenuItem>
                         <MenuItem value={"Inactive"}>Inactive</MenuItem>
                         <MenuItem value={"Locked"}>Locked</MenuItem>
@@ -301,7 +321,21 @@ handleEdit_AddUser(user){
                             <div>Selected</div>
                             <div className='vl'></div>
                             <div className='icon_wrapper '><CreateIcon  fontSize='20px' /></div>
-                            <div className='icon_wrapper'><BlockIcon  fontSize='20px' /></div>
+                            <div className='icon_wrapper'><BlockIcon  fontSize='20px'
+                             onClick={()=>{
+                                if(this.state.row_selected_Items.length!==0){
+                                  var temp=[...this.state.users];
+                                 temp= temp.filter((item)=>item.id !== this.state.row_selected_Items[0]);
+                                 console.log(this.state.item);
+                                  this.setState({users:temp});
+                                  localStorage.setItem( 'users', JSON.stringify(temp) );
+                                  alert('user is deleted');
+                                }
+                                else{
+                                  alert('Please Select User');
+                                }
+                            }}
+                            /></div>
                             <div className='icon_wrapper'><LockIcon  fontSize='20px' /></div>
                             <div className='icon_wrapper'>Assign to Profile</div>
                             <div className='icon_wrapper'>Assign to Group</div>
@@ -319,8 +353,8 @@ handleEdit_AddUser(user){
             </div>
             <div className='col-md-12 p-0'>
             <Box sx={{ height: 300 }}>
-            <DataGridPro
-                rows={this.state.users}
+            <DataGrid
+                rows={filterdRows()}
                 columns={columns}
                   autoHeight={false}
                 hideFooterPagination
@@ -329,22 +363,13 @@ handleEdit_AddUser(user){
                 rowHeight={80}
                 hideFooterSelectedRowCount
                 onRowSelectionModelChange={(newRowSelectionModel) => {
-                    this.setState({rowSelected:newRowSelectionModel.length});
-                    
+                    this.setState({rowSelected:newRowSelectionModel.length ,row_selected_Items:newRowSelectionModel});
+                    console.log(newRowSelectionModel);
                     
                   }}
                   onRowClick={handleRowClick} 
-                  filterModel={{
-                    items: [
-                      { id:1,field: 'Email', operator: 'contains', value: this.state.email_f },
-                      { id:2,field: 'UserName', operator: 'contains', value: this.state.user_f },
-                      { id:3,field: 'status', operator: 'is', value: this.state.status_f==='any' ? '':this.state.status_f },
-                      { id:4,field: 'created_on', operator: 'is', value:this.state.date_f},
-                   
-                      
-                  ]
-              
-                  }}
+               
+            
             />
             </Box>
             </div>
