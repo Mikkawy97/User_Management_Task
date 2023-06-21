@@ -110,15 +110,21 @@ handleEdit_AddUser(user){
    
       this.setState({users:temp});
       localStorage.setItem( 'users', JSON.stringify(temp) );
+      alert('User Added');
   }
   else{
+    alert('User edited');
+   
     var users=[...this.state.users];
+    console.log(user);
     for (let index = 0; index < users.length; index++) {
       if(user.id===users[index].id){
         users.splice(index,1,user);
+      
       }
       
     }
+    console.log(users);
     this.setState({users:users});
     localStorage.setItem( 'users', JSON.stringify(users) );
 
@@ -198,7 +204,8 @@ handleEdit_AddUser(user){
        };
        const filterdRows =() =>{
         var temp=[...this.state.users];
-      
+        console.log(temp);
+        
          temp=  temp.filter((item)=>{
           
            if(item.Email?.includes(this.state.email_f) && item.UserName?.includes(this.state.user_f) && (this.state.status_f==='any'? true:item.status?.includes(this.state.status_f) ) && item.created_on?.includes(this.state.date_f) ){
@@ -210,7 +217,6 @@ handleEdit_AddUser(user){
            }
               
           });
-      
           return temp;
         
    
@@ -229,6 +235,7 @@ handleEdit_AddUser(user){
                       this.handleOpen();
                       this.setState({item:{}});
                       this.setState({edit:false})  ;
+                
                     }} className='add_user'>
                         <AiOutlinePlus size={20} color='white'/>
                         Add New User

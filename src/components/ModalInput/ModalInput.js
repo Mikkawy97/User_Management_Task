@@ -6,20 +6,32 @@ import { styled, Box } from '@mui/system';
 import Modal from '@mui/base/Modal';
 import './ModalInput.css';
 import { IoMdClose } from "react-icons/io";
+import { useForm } from 'react-hook-form';
 
-import { useState } from "react";
 
 
 export default function ModalInput(props) {
  
-  const [item, setItem] = useState({fullName:'',UserName:'',Email:'',status:'',group:''});
-    let openprop=props.open;
  
+    let openprop=props.open;
+    
+    const {register ,handleSubmit}=useForm();
+   console.log(props.item);
 
+const onSave=(formValues)=>{
+  
+  if(formValues.UserName?.length !==0 && formValues.Email?.length!==0 && formValues.fullName?.length !==0 && formValues.group?.length !==0 && formValues.status?.length !==0)    {
+       
+    props.handleEdit_AddUser({...formValues,id:props.item.id,color:props.item.color,created_on:props.item.created_on});
    
 
+  }  
+  else{
+    alert('Please Complete All Fields');
+  }
 
-    console.log(props.item);
+}
+
   return (
     <div>
 
@@ -44,64 +56,25 @@ export default function ModalInput(props) {
             </div>
         </div>
         <div className='input_container'>
+        <form onSubmit={handleSubmit(onSave)}>
             <div className='container'>
+             
                 <div className="form-group mb-4">
                         <label className='input_label' >Full Name</label>
-                        <input type="text" placeholder='Enter full Name' className="form-control" id="usr" 
-                        value={props.item.fullName}
-                        onChange={(e)=>{
-                            var temp={...props.item};
-                            temp.fullName=e.target.value;
-                            props.handleUserSelection(temp);
-                            
-                            setItem(temp);
-
-                        }}
-                        
-                        
-                        
-                        />
+                        <input type="text" placeholder='Enter full Name' className="form-control" {...register('fullName')} defaultValue={props.item.fullName}/>
                 </div>
                 <div className="form-group mb-4">
                         <label className='input_label'>User Name</label>
-                        <input placeholder='Enter User Name' type="text" className="form-control" id="pwd" 
-                             value={props.item.UserName}
-                             onChange={(e)=>{
-                                 var temp={...props.item};
-                                 temp.UserName=e.target.value;
-                                 props.handleUserSelection(temp);
-                                 setItem(temp);
-                             }}
-                        
-                        />
+                        <input placeholder='Enter User Name' type="text" className="form-control"   {...register('UserName')} defaultValue={props.item.UserName}/>
                 </div>
                 <div className="form-group mb-4">
                         <label className='input_label'>Email Address</label>
-                        <input placeholder='Enter user email address' type="email" className="form-control" id="pwd" 
-                                value={props.item.Email}
-                                onChange={(e)=>{
-                                    var temp={...props.item};
-                                    temp.Email=e.target.value;
-                                    props.handleUserSelection(temp);
-                                    setItem(temp);
-                                }}
-                        
-                        />
+                        <input placeholder='Enter user email address' type="email" className="form-control"   {...register('Email')} defaultValue={props.item.Email}/>
                 </div>
                 <div className="form-group mb-4">
                         <label className='input_label'>User Group</label>
-                        <select className="form-select"  aria-label="Default select example"
-                         value={props.item.group}
-                         onChange={(e)=>{
-                             var temp={...props.item};
-                             temp.group=e.target.value;
-                             props.handleUserSelection(temp);
-                             setItem(temp);
-                         }}
-                        
-                        
-                        >
-                                <option selected disabled hidden>Choose Use Group</option>
+                        <select className="form-select"  aria-label="Default select example"  {...register('group')} defaultValue={props.item.group? props.item.group:'0'} >
+                                <option  disabled hidden value="0">Choose Use Group</option>
                                 <option value="Office">Office</option>
                                 <option value="Managers">Managers</option>
                                 <option value="Head Office">Head Office</option>
@@ -109,25 +82,14 @@ export default function ModalInput(props) {
                 </div>
                 <div className="form-group ">
                         <label className='input_label'>Assign Profile</label>
-                        <select className="form-select"  aria-label="Default select example" 
-                    
-                    value={props.item.status}
-                    onChange={(e)=>{
-                        var temp={...props.item};
-                        temp.status=e.target.value;
-                        props.handleUserSelection(temp);
-                        setItem(temp);
-
-                    }}
-                   
-                        
-                        >
-                                <option selected disabled hidden>Choose profile</option>
+                        <select className="form-select"  aria-label="Default select example"  {...register('status')} defaultValue={props.item.status? props.item.status:'0'} >
+                                <option disabled hidden value="0">Choose profile</option>
                                 <option value="Locked">Locked</option>
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
                         </select>
                 </div>
+                
         </div>
         <hr />
         <div className='modal_footer'>
@@ -138,22 +100,12 @@ export default function ModalInput(props) {
             </div>
             <div className='col-md-6 p-0 d-flex justify-content-end'>
                 <button className='cancel_user'onClick={props.handleClose} >Cancel</button>
-                <button className='add_user ' onClick={()=>{
-                 
-                      if(item.UserName?.length !==0 && item.Email?.length!==0 && item.fullName?.length !==0 && item.group?.length !==0 && item.status?.length !==0)    {
-               
-                        props.handleEdit_AddUser(props.item);
-                        alert('User Added');
-                      }  
-                      else{
-                        alert('Please Complete All Fields');
-                      }
-                    
-                }}>{props.edit ?'Edit':'Add'} User</button>
+                <button className='add_user ' type='submit'>{props.edit ?'Edit':'Add'} User</button>
             </div>
         </div>
         </div>
         </div>
+        </form>
         </div>
    
         </Box>
